@@ -41,12 +41,13 @@
           </template>
       </b-modal>
 
-    <b-table class="table" thead-class="tableHead" :items="items" :fields="fields" :striped="striped" :table-variant="tableVariant"></b-table>
+    <b-table class="table" thead-class="tableHead" :items="tasks" :fields="fields" :striped="striped" :table-variant="tableVariant"></b-table>
 
   </div>
 </template>
 
 <script>
+import data_tasks from "../assets/tasks";
 export default {
   data() {
     return {
@@ -67,18 +68,7 @@ export default {
         }
       ],
 
-      items: [
-        {
-          task_name:'do this',
-          deadline:'17.10',
-          done: 'yes'
-        },
-        {
-          task_name:'do this',
-          deadline:'17.10',
-          done: 'yes'
-        }
-      ],
+      tasks: data_tasks.tasks,
 
       tableVariant: 'light',
       striped: true
