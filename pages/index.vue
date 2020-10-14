@@ -7,9 +7,15 @@
       <p>До истечения срока выполнения задачи, вам на почту прилетит уведомление.</p>
       <p>Успехов вам!</p>
     </div>
-    <nuxt-link to="/addtask">
-      <b-button type="submit" variant="dark" squared class="button">Создать задачу</b-button>
-    </nuxt-link>
+    
+    <b-button v-b-modal.addtask variant="dark" squared class="button">Создать задачу</b-button>
+      <b-modal id="addtask" size="lg" centered title="Создание новой задачи">
+          <template v-slot:modal-footer="{ ok, cancel }">
+              <b-button @click="cancel()" class="modal-button" squared variant="dark">Отмена</b-button>
+              <b-button @click="ok()" class="modal-button" squared variant="dark">Создать задачу</b-button>
+          </template>
+      </b-modal>
+
     <b-table class="table" thead-class="tableHead" :items="items" :fields="fields" :striped="striped" :table-variant="tableVariant"></b-table>
   </div>
 </template>
@@ -64,6 +70,7 @@ export default {
     font-size: 36px;
     margin-bottom: 22px;
   }
+
   .container {
     text-align: center;
     display:flex;
@@ -92,5 +99,18 @@ export default {
   .tableHead {
     background-color: black;
     color: white;
+  }
+
+  .modal-header {
+    border-bottom: none;
+  }
+
+  .modal-footer {
+    border-top: none;
+  }
+
+  .modal-button {
+    background-color: black;
+    width: 228px;
   }
 </style>
