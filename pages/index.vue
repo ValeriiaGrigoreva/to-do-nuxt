@@ -9,7 +9,32 @@
     </div>
     
     <b-button v-b-modal.addtask variant="dark" squared class="button">Создать задачу</b-button>
+
       <b-modal id="addtask" size="lg" centered title="Создание новой задачи">
+          <template v-slot:modal-header="{ close }">
+            <p class="headerText">Создание новой задачи</p>
+            <img src="@/assets/closeIcon.png" @click="close()" class="closeIcon">
+          </template>
+
+          <div class="inputs">
+            <div>
+              <label for="task-name">Наименование задачи</label>
+              <b-form-input id="task-name" class="input"></b-form-input>
+            </div>
+            <div>
+              <label for="task-description">Описание задачи</label>
+              <b-form-input id="task-description" class="input"></b-form-input>
+            </div>
+            <div>
+              <label for="deadline">Крайний срок выполнения задачи</label>
+              <b-form-input id="deadline" type="date" class="input"></b-form-input>
+            </div>
+            <div>
+              <label for="email">Ваш E-mail для уведомления</label>
+              <b-form-input id="email" type="email" class="input"></b-form-input>
+            </div>
+          </div>
+
           <template v-slot:modal-footer="{ ok, cancel }">
               <b-button @click="cancel()" class="modal-button" squared variant="dark">Отмена</b-button>
               <b-button @click="ok()" class="modal-button" squared variant="dark">Создать задачу</b-button>
@@ -17,6 +42,7 @@
       </b-modal>
 
     <b-table class="table" thead-class="tableHead" :items="items" :fields="fields" :striped="striped" :table-variant="tableVariant"></b-table>
+
   </div>
 </template>
 
@@ -112,5 +138,27 @@ export default {
   .modal-button {
     background-color: black;
     width: 228px;
+  }
+
+  .headerText {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+  }
+
+  .closeIcon {
+    cursor: pointer;
+  }
+
+  .input {
+    width: 353px;
+    border-radius: 0px;
+    margin-bottom: 35px;
+    background-color:#C4C4C4;
+  }
+
+  .inputs {
+    margin-left: 98px;
   }
 </style>
