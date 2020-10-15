@@ -41,7 +41,23 @@
           </template>
       </b-modal>
 
-    <b-table class="table" thead-class="tableHead" :items="tasks" :fields="fields" :striped="striped" :table-variant="tableVariant"></b-table>
+    <b-table class="table" thead-class="tableHead" :items="tasks" :fields="fields" :striped="striped" :table-variant="tableVariant">
+      <template v-slot:body={items}>
+        <tbody>
+          <tr v-for="(item,index) in items" :key="index">
+            <td>
+                {{item.task_name}}
+            </td>
+            <td>
+              {{item.deadline}}
+            </td>
+            <td>
+              <img :src="item.done" >
+            </td>
+          </tr>
+        </tbody>
+      </template>
+    </b-table>
 
   </div>
 </template>
@@ -84,7 +100,7 @@ export default {
             "task_description": this.task_description,
             "deadline": this.deadline,
             "email": this.email,
-            "done": "yes"
+            "done": "@/assets/doneIcon.png"
           }
         )
         ok();

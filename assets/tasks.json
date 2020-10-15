@@ -1,9 +1,5 @@
 {
     "tasks": [
-        {
-            "task_name": "do this",
-            "deadline": "17.10",
-            "done": "yes"
-        }
+        
     ]
 }
