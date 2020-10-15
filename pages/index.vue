@@ -19,25 +19,25 @@
           <div class="inputs">
             <div>
               <label for="task-name">Наименование задачи</label>
-              <b-form-input id="task-name" class="input"></b-form-input>
+              <b-form-input id="task-name" class="input" v-model="task_name"></b-form-input>
             </div>
             <div>
               <label for="task-description">Описание задачи</label>
-              <b-form-input id="task-description" class="input"></b-form-input>
+              <b-form-input id="task-description" class="input" v-model="task_description"></b-form-input>
             </div>
             <div>
               <label for="deadline">Крайний срок выполнения задачи</label>
-              <b-form-input id="deadline" type="date" class="input"></b-form-input>
+              <b-form-input id="deadline" type="date" class="input" v-model="deadline" :formatter="formatter" lazy-formatter></b-form-input>
             </div>
             <div>
               <label for="email">Ваш E-mail для уведомления</label>
-              <b-form-input id="email" type="email" class="input"></b-form-input>
+              <b-form-input id="email" type="email" class="input" v-model="email"></b-form-input>
             </div>
           </div>
 
           <template v-slot:modal-footer="{ ok, cancel }">
               <b-button @click="cancel()" class="modal-button" squared variant="dark">Отмена</b-button>
-              <b-button @click="ok()" class="modal-button" squared variant="dark">Создать задачу</b-button>
+              <b-button @click="addTask(ok)"  class="modal-button" squared variant="dark">Создать задачу</b-button>
           </template>
       </b-modal>
 
@@ -73,6 +73,27 @@ export default {
       tableVariant: 'light',
       striped: true
     }
+  },
+
+  methods: {
+    addTask(ok) {
+      if (this.task_name != undefined && this.task_description != undefined && this.deadline != undefined && this.email != undefined) {
+        this.tasks.push (
+          {
+            "task_name": this.task_name,
+            "task_description": this.task_description,
+            "deadline": this.deadline,
+            "email": this.email,
+            "done": "yes"
+          }
+        )
+        ok();
+      }
+    },
+
+    /*formatter(value) {
+      return value.split("-").reverse().join(".");
+    }*/
   }
 }
 </script>
