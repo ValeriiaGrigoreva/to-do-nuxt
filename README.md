@@ -1,20 +1,26 @@
 # to-do-nuxt
+Чтобы запустить сервер тебе нужно прописать это:
+```bash
 
-## Build Setup
+$ npm install -g json-server
+
+```
+Открываешь два терминала (один для запуска Nuxt, другой для запуска Json-server)
+
+Терминал 1 - запуск сервера :
 
 ```bash
-# install dependencies
-$ npm install
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+$ cd server
 
-# build for production and launch server
-$ npm run build
-$ npm run start
+$ json-server --watch db.json
 
-# generate static project
-$ npm run generate
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+Терминал 2 - запуск Nuxt:
+
+```bash
+
+$ npm run dev
+
+```

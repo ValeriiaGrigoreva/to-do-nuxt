@@ -10,7 +10,7 @@
     
     <b-button v-b-modal.addtask variant="dark" squared class="button">Создать задачу</b-button>
 
-      <b-modal id="addtask" size="lg" centered title="Создание новой задачи">
+      <b-modal v-model="show" id="addtask" size="lg" centered title="Создание новой задачи">
           <template v-slot:modal-header="{ close }">
             <p class="headerText">Создание новой задачи</p>
             <img src="@/assets/closeIcon.png" @click="close()" class="closeIcon">
@@ -27,7 +27,7 @@
             </div>
             <div>
               <label for="deadline">Крайний срок выполнения задачи</label>
-              <b-form-input id="deadline" type="date" class="input" v-model="deadline" :formatter="formatter" lazy-formatter></b-form-input>
+              <b-form-input id="deadline" type="date" class="input" v-model="deadline" lazy-formatter></b-form-input>
             </div>
             <div>
               <label for="email">Ваш E-mail для уведомления</label>
@@ -35,27 +35,15 @@
             </div>
           </div>
 
-          <template v-slot:modal-footer="{ ok, cancel }">
-              <b-button @click="cancel()" class="modal-button" squared variant="dark">Отмена</b-button>
-              <b-button @click="addTask(ok)"  class="modal-button" squared variant="dark">Создать задачу</b-button>
+          <template v-slot:modal-footer>
+              <b-button @click="show=false" class="modal-button" squared variant="dark">Отмена</b-button>
+              <b-button @click="addTask()"  class="modal-button" squared variant="dark">Создать задачу</b-button>
           </template>
       </b-modal>
 
-    <b-table class="table" thead-class="tableHead" :items="tasks" :fields="fields" :striped="striped" :table-variant="tableVariant">
-      <template v-slot:body={items}>
-        <tbody>
-          <tr v-for="(item,index) in items" :key="index">
-            <td>
-                {{item.task_name}}
-            </td>
-            <td>
-              {{item.deadline}}
-            </td>
-            <td>
-              <img :src="item.done" >
-            </td>
-          </tr>
-        </tbody>
+    <b-table class="table" thead-class="tableHead" @row-selected="onRowSelected($event)" selectable :items="tasks" :fields="fields" :striped="striped" :table-variant="tableVariant">
+      <template v-slot:cell(done)>
+        <b-icon @click="closeTask()" icon="check" font-scale="1.5"></b-icon>
       </template>
     </b-table>
 
@@ -63,10 +51,15 @@
 </template>
 
 <script>
-import data_tasks from "../assets/tasks";
+import axios from "axios";
 export default {
   data() {
     return {
+      show: false,
+      task_name: null,
+      task_description: null,
+      deadline: null,
+      email: null,
       fields: [
         {
           key: 'task_name',
@@ -84,32 +77,52 @@ export default {
         }
       ],
 
-      tasks: data_tasks.tasks,
+      tasks: null,
 
       tableVariant: 'light',
       striped: true
     }
   },
-
+  mounted(){
+    this.getData()
+  },
   methods: {
-    addTask(ok) {
+    addTask() {
       if (this.task_name != undefined && this.task_description != undefined && this.deadline != undefined && this.email != undefined) {
-        this.tasks.push (
-          {
-            "task_name": this.task_name,
-            "task_description": this.task_description,
-            "deadline": this.deadline,
-            "email": this.email,
-            "done": "@/assets/doneIcon.png"
-          }
-        )
-        ok();
+        let newData = {
+          "task_name": this.task_name,
+          "task_description": this.task_description,
+          "deadline": this.deadline.replace(/^(\d{4}).(\d{2}).(\d{2})/,'$3.$2.$1'),
+          "email": this.email,
+          "done": "@/assets/doneIcon.png"
+        }
+        this.tasks.push(newData)
+        this.sendData(newData)
+        this.show=false
       }
     },
+    closeTask(){  
+      alert('окно открыто!')
+    },
+    onRowSelected(picked){
+      console.log(picked)
+    },
 
-    /*formatter(value) {
-      return value.split("-").reverse().join(".");
-    }*/
+    async sendData(newData){
+      await axios.post("http://localhost:3000/tasks", newData)
+      .then((response) => {
+        console.log(response)
+      })
+    },
+
+    async getData(){
+      await axios.get("http://localhost:3000/tasks")
+      .then((response) => {
+        this.tasks = response.data
+      })
+      let kek = await axios.get(`http://localhost:3000/tasks?id=1`)
+      console.log('kek -> ', kek.data[0])
+    }
   }
 }
 </script>
