@@ -10,7 +10,7 @@
     
     <b-button v-b-modal.addtask variant="dark" squared class="button">Создать задачу</b-button>
 
-      <b-modal v-model="show" id="addtask" size="lg" centered title="Создание новой задачи">
+      <b-modal id="addtask" size="lg" centered>
           <template v-slot:modal-header="{ close }">
             <p class="headerText">Создание новой задачи</p>
             <img src="@/assets/closeIcon.png" @click="close()" class="closeIcon">
@@ -35,18 +35,29 @@
             </div>
           </div>
 
-          <template v-slot:modal-footer>
-              <b-button @click="show=false" class="modal-button" squared variant="dark">Отмена</b-button>
-              <b-button @click="addTask()"  class="modal-button" squared variant="dark">Создать задачу</b-button>
+          <template v-slot:modal-footer="{ close,ok }">
+              <b-button @click="close()" class="modal-button" squared variant="dark">Отмена</b-button>
+              <b-button @click="addTask(ok)"  class="modal-button" squared variant="dark">Создать задачу</b-button>
           </template>
       </b-modal>
 
     <b-table class="table" thead-class="tableHead" @row-selected="onRowSelected($event)" selectable :items="tasks" :fields="fields" :striped="striped" :table-variant="tableVariant">
       <template v-slot:cell(done)>
-        <b-icon @click="closeTask()" icon="check" font-scale="1.5"></b-icon>
+        <b-icon @click="closeTask()" icon="check" font-scale="1.5" v-b-modal.deletetask></b-icon>
       </template>
     </b-table>
-
+    <b-modal id="deletetask" centered v-model="show">
+      <template v-slot:modal-header>
+        <p></p>
+      </template>
+      <div class="delete-modal">
+        <p>Поздравляем вас с завершением задачи!</p>
+        <img src="../assets/champaign.png">
+      </div>
+      <template v-slot:modal-footer>
+        <p></p>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -87,22 +98,21 @@ export default {
     this.getData()
   },
   methods: {
-    addTask() {
+    addTask(ok) {
       if (this.task_name != undefined && this.task_description != undefined && this.deadline != undefined && this.email != undefined) {
         let newData = {
           "task_name": this.task_name,
           "task_description": this.task_description,
           "deadline": this.deadline.replace(/^(\d{4}).(\d{2}).(\d{2})/,'$3.$2.$1'),
           "email": this.email,
-          "done": "@/assets/doneIcon.png"
         }
         this.tasks.push(newData)
         this.sendData(newData)
-        this.show=false
+        ok()
       }
     },
     closeTask(){  
-      alert('окно открыто!')
+      setTimeout (() => this.show=false, 2000);
     },
     onRowSelected(picked){
       console.log(picked)
@@ -200,5 +210,12 @@ export default {
 
   .inputs {
     margin-left: 98px;
+  }
+
+  .delete-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 </style>

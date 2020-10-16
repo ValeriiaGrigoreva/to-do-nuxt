@@ -5,15 +5,27 @@
       "task_description": "ИГРААТЬ",
       "deadline": "15.10.2020",
       "email": "kamol@gmail.com",
-      "done": "@/assets/doneIcon.png",
-      "id": 3
+      "id": 1
     },
     {
       "task_name": "Играть в 9 часов вечера в cs:go",
       "task_description": "ИГРААТЬ",
       "deadline": "16.10.2020",
       "email": "kamych1916@gmail.com",
-      "done": "@/assets/doneIcon.png",
+      "id": 2
+    },
+    {
+      "task_name": "scddcd",
+      "task_description": "dcdc",
+      "deadline": "17.10.2020",
+      "email": "vmgrigoreva@gmail.com",
+      "id": 3
+    },
+    {
+      "task_name": "dfdf",
+      "task_description": "cdcdc",
+      "deadline": "17.10.2020",
+      "email": "vmgrigoreva@gmail.com",
       "id": 4
     }
   ]
