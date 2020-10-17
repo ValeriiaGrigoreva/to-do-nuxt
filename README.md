@@ -13,7 +13,7 @@ $ npm install -g json-server
 
 $ cd server
 
-$ json-server --watch db.json
+$ json-server --watch db.json --port 8000
 
 ```
 

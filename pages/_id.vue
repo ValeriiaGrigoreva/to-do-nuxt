@@ -27,7 +27,7 @@
 <script>
 export default {
     async asyncData({$axios, params}) {
-        let task = await $axios.get(`http://localhost:3000/tasks?id=${params.id}`)
+        let task = await $axios.get(`http://localhost:8000/tasks?id=${params.id}`)
         return {task}
     }
     

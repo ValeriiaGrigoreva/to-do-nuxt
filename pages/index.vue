@@ -10,43 +10,44 @@
     
     <b-button v-b-modal.addtask variant="dark" squared class="button">Создать задачу</b-button>
 
-      <b-modal id="addtask" size="lg" centered>
-          <template v-slot:modal-header="{ close }">
-            <p class="headerText">Создание новой задачи</p>
-            <img src="@/assets/closeIcon.png" @click="close()" class="closeIcon">
-          </template>
+    <b-modal id="addtask" size="lg" centered>
+        <template v-slot:modal-header="{ close }">
+          <p class="headerText">Создание новой задачи</p>
+          <img src="@/assets/closeIcon.png" @click="close()" class="closeIcon">
+        </template>
 
-          <div class="inputs">
-            <div>
-              <label for="task-name">Наименование задачи</label>
-              <b-form-input id="task-name" class="input" v-model="task_name"></b-form-input>
-            </div>
-            <div>
-              <label for="task-description">Описание задачи</label>
-              <b-form-input id="task-description" class="input" v-model="task_description"></b-form-input>
-            </div>
-            <div>
-              <label for="deadline">Крайний срок выполнения задачи</label>
-              <b-form-input id="deadline" type="date" class="input" v-model="deadline" lazy-formatter></b-form-input>
-            </div>
-            <div>
-              <label for="email">Ваш E-mail для уведомления</label>
-              <b-form-input id="email" type="email" class="input" v-model="email"></b-form-input>
-            </div>
+        <div class="inputs">
+          <div>
+            <label for="task-name">Наименование задачи</label>
+            <b-form-input id="task-name" class="input" v-model="task_name"></b-form-input>
           </div>
+          <div>
+            <label for="task-description">Описание задачи</label>
+            <b-form-input id="task-description" class="input" v-model="task_description"></b-form-input>
+          </div>
+          <div>
+            <label for="deadline">Крайний срок выполнения задачи</label>
+            <b-form-input id="deadline" type="date" class="input" v-model="deadline" lazy-formatter></b-form-input>
+          </div>
+          <div>
+            <label for="email">Ваш E-mail для уведомления</label>
+            <b-form-input id="email" type="email" class="input" v-model="email"></b-form-input>
+          </div>
+        </div>
 
-          <template v-slot:modal-footer="{ close,ok }">
-              <b-button @click="close()" class="modal-button" squared variant="dark">Отмена</b-button>
-              <b-button @click="addTask(ok)"  class="modal-button" squared variant="dark">Создать задачу</b-button>
-          </template>
-      </b-modal>
+        <template v-slot:modal-footer="{ close,ok }">
+            <b-button @click="close()" class="modal-button" squared variant="dark">Отмена</b-button>
+            <b-button @click="addTask(ok)"  class="modal-button" squared variant="dark">Создать задачу</b-button>
+        </template>
+    </b-modal>
 
     <b-table class="table" thead-class="tableHead" @row-selected="onRowSelected($event)" selectable :items="tasks" :fields="fields" :striped="striped" :table-variant="tableVariant">
-      <template v-slot:cell(done)>
-        <b-icon @click="closeTask()" icon="check" font-scale="1.5" v-b-modal.deletetask></b-icon>
+      <template v-slot:cell(done)="row">
+        <b-button squared variant="dark" @click="closeTask(row.item)"><b-icon  icon="check" font-scale="1.5" ></b-icon></b-button>
       </template>
     </b-table>
-    <b-modal id="deletetask" centered v-model="show">
+
+    <b-modal id="deletetask" centered v-model="modal_for_end_task">
       <template v-slot:modal-header>
         <p></p>
       </template>
@@ -58,6 +59,7 @@
         <p></p>
       </template>
     </b-modal>
+
   </div>
 </template>
 
@@ -66,6 +68,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      modal_for_end_task: false,
       show: false,
       task_name: null,
       task_description: null,
@@ -111,27 +114,30 @@ export default {
         ok()
       }
     },
-    closeTask(){  
-      setTimeout (() => this.show=false, 2000);
+    async closeTask(table_item){ 
+      this.modal_for_end_task = true
+      await axios.delete(`http://localhost:8000/tasks/${table_item.id}`).then(() => {
+        setTimeout (() => this.modal_for_end_task=false, 2000);
+      }).catch((err) => {
+        this.$bvToast.toast(err, {
+          title: "Ошибка",
+          variant: "danger",
+          solid: true
+        })
+      });
     },
     onRowSelected(picked){
       this.$router.push("/" + picked[0].id)
     },
 
     async sendData(newData){
-      await axios.post("http://localhost:3000/tasks", newData)
-      .then((response) => {
-        console.log(response)
-      })
+      await axios.post("http://localhost:8000/tasks", newData)
     },
 
     async getData(){
-      await axios.get("http://localhost:3000/tasks")
-      .then((response) => {
+      await axios.get("http://localhost:8000/tasks").then((response) => {
         this.tasks = response.data
       })
-      let kek = await axios.get(`http://localhost:3000/tasks?id=1`)
-      console.log('kek -> ', kek.data[0])
     }
   }
 }
