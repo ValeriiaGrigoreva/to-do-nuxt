@@ -115,7 +115,7 @@ export default {
       setTimeout (() => this.show=false, 2000);
     },
     onRowSelected(picked){
-      console.log(picked)
+      this.$router.push("/" + picked[0].id)
     },
 
     async sendData(newData){
