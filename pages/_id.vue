@@ -18,8 +18,21 @@
         </div>
         <div class="buttons">
             <nuxt-link to="/"><b-button class="button_ buttonLeft" variant="dark" squared>Вернуться назад</b-button></nuxt-link>
-            <b-button class="button_" variant="dark" squared>Завершить задачу</b-button>
+            <b-button class="button_" variant="dark" squared @click="closeTask(task.data[0])">Завершить задачу</b-button>
         </div>
+
+        <b-modal id="deletetask" centered v-model="modal_for_end_task">
+            <template v-slot:modal-header>
+                <p></p>
+            </template>
+            <div class="delete-modal">
+                <p>Поздравляем вас с завершением задачи!</p>
+                <img src="../assets/champaign.png">
+            </div>
+            <template v-slot:modal-footer>
+                <p></p>
+            </template>
+        </b-modal>
     </div>
     
 </template>
@@ -29,6 +42,23 @@ export default {
     async asyncData({$axios, params}) {
         let task = await $axios.get(`http://localhost:8000/tasks?id=${params.id}`)
         return {task}
+    },
+
+    async closeTask(table_item){ 
+      this.modal_for_end_task = true;
+      let deleteIndex = this.tasks.findIndex(task => task.id == table_item.id);
+      this.tasks.splice(deleteIndex,1);
+      await $axios.delete(`http://localhost:8000/tasks/${table_item.id}`).then(() => {
+        setTimeout (() => this.modal_for_end_task=false, 2000);
+      }).catch((err) => {
+        this.$bvToast.toast(err, {
+          title: "Ошибка",
+          variant: "danger",
+          solid: true
+        })
+      });
+
+      this.$router.push("/");
     }
     
 }
