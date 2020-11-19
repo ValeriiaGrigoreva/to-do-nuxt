@@ -115,6 +115,7 @@ export default {
       }
     },
     async closeTask(table_item){ 
+      console.log(table_item);
       this.modal_for_end_task = true
       let deleteIndex = this.tasks.findIndex(task => task.id == table_item.id);
       this.tasks.splice(deleteIndex,1);

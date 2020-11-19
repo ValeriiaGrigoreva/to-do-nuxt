@@ -39,28 +39,32 @@
 
 <script>
 export default {
-    async asyncData({$axios, params}) {
-        let task = await $axios.get(`http://localhost:8000/tasks?id=${params.id}`)
-        return {task}
-    },
 
-    async closeTask(table_item){ 
-      this.modal_for_end_task = true;
-      let deleteIndex = this.tasks.findIndex(task => task.id == table_item.id);
-      this.tasks.splice(deleteIndex,1);
-      await $axios.delete(`http://localhost:8000/tasks/${table_item.id}`).then(() => {
-        setTimeout (() => this.modal_for_end_task=false, 2000);
-      }).catch((err) => {
-        this.$bvToast.toast(err, {
-          title: "Ошибка",
-          variant: "danger",
-          solid: true
-        })
-      });
-
-      this.$router.push("/");
-    }
     
+        async asyncData({$axios, params}) {
+            let task = await $axios.get(`http://localhost:8000/tasks?id=${params.id}`)
+            return {task}
+        },
+
+        methods: {
+        async closeTask(table_item){ 
+            this.modal_for_end_task = true;
+            let deleteIndex = this.tasks.findIndex(task => task.id == table_item.id);
+            this.tasks.splice(deleteIndex,1);
+            await $axios.delete(`http://localhost:8000/tasks/${table_item.id}`).then(() => {
+                setTimeout (() => this.modal_for_end_task=false, 2000);
+            }).catch((err) => {
+                this.$bvToast.toast(err, {
+                title: "Ошибка",
+                variant: "danger",
+                solid: true
+                })
+            });
+
+            this.$router.push("/");
+        },
+
+    }
 }
 </script>
 
