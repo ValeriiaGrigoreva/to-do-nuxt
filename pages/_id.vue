@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
 
     
@@ -46,13 +47,22 @@ export default {
             return {task}
         },
 
+        data() {
+            return {
+            modal_for_end_task: false
+            }
+        },
+
         methods: {
         async closeTask(table_item){ 
             this.modal_for_end_task = true;
-            let deleteIndex = this.tasks.findIndex(task => task.id == table_item.id);
-            this.tasks.splice(deleteIndex,1);
-            await $axios.delete(`http://localhost:8000/tasks/${table_item.id}`).then(() => {
-                setTimeout (() => this.modal_for_end_task=false, 2000);
+            //let deleteIndex = this.tasks.findIndex(task => task.id == table_item.id);
+            //this.tasks.splice(deleteIndex,1);
+            await axios.delete(`http://localhost:8000/tasks/${table_item.id}`).then(() => {
+                setTimeout (() => {
+                    this.modal_for_end_task=false;
+                    this.$router.push("/");
+                }, 2000);
             }).catch((err) => {
                 this.$bvToast.toast(err, {
                 title: "Ошибка",
@@ -60,8 +70,6 @@ export default {
                 solid: true
                 })
             });
-
-            this.$router.push("/");
         },
 
     }

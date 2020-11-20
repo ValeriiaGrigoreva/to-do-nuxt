@@ -1,11 +1,3 @@
 {
-  "tasks": [
-    {
-      "task_name": "сделать дз",
-      "task_description": "ddv",
-      "deadline": "20.11.2020",
-      "email": "grigorevavm@yandex.ru",
-      "id": 1
-    }
-  ]
+  "tasks": []
 }
