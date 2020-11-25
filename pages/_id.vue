@@ -2,6 +2,7 @@
     <div class="container">
         <div>
             <p class="header">Наименование задачи</p>
+
             <p>{{task.data[0].task_name}}</p>
         </div>
         <div>
@@ -44,16 +45,19 @@ export default {
     
         async asyncData({$axios, params}) {
             let task = await $axios.get(`http://localhost:8000/tasks?id=${params.id}`)
+            console.log(task)
             return {task}
         },
 
         data() {
             return {
-            modal_for_end_task: false
+                modal_for_end_task: false,
+                task: [],
             }
         },
 
         methods: {
+
         async closeTask(table_item){ 
             this.modal_for_end_task = true;
             //let deleteIndex = this.tasks.findIndex(task => task.id == table_item.id);

@@ -103,11 +103,19 @@ export default {
   methods: {
     addTask(ok) {
       if (this.task_name != undefined && this.task_description != undefined && this.deadline != undefined && this.email != undefined) {
+        let lastTaskId
+        for(let idt of this.tasks){
+          lastTaskId = idt.id 
+        }
+        if(!lastTaskId){
+          lastTaskId = 0
+        }
         let newData = {
           "task_name": this.task_name,
           "task_description": this.task_description,
           "deadline": this.deadline.replace(/^(\d{4}).(\d{2}).(\d{2})/,'$3.$2.$1'),
           "email": this.email,
+          "id": lastTaskId+1
         }
         this.tasks.push(newData)
         this.sendData(newData)
@@ -131,6 +139,7 @@ export default {
       });
     },
     onRowSelected(picked){
+      console.log(picked)
       this.$router.push("/" + picked[0].id)
     },
 
