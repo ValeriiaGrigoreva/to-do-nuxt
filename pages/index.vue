@@ -143,15 +143,25 @@ export default {
       this.$router.push("/" + picked[0].id)
     },
 
-    async sendData(newData){
-      await axios.post("http://localhost:8000/tasks", newData)
-    },
+    // async sendData(newData){
+    //   await axios.post("http://localhost:8000/tasks", newData)
+    // },
 
-    async getData(){
-      await axios.get("http://localhost:8000/tasks").then((response) => {
-        this.tasks = response.data
-      })
-    }
+    // sendData() {
+    //   app.post()
+    // },
+
+    // async getData(){
+    //   await axios.get("http://localhost:8000/tasks").then((response) => {
+    //     this.tasks = response.data
+    //   })
+    // },
+
+    getData(){ 
+      axios.get('/getData').then(response => {console.log(response)})
+          
+      }
+    
   }
 }
 </script>
