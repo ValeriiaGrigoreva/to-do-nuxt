@@ -139,7 +139,6 @@ export default {
       });
     },
     onRowSelected(picked){
-      console.log(picked)
       this.$router.push("/" + picked[0].id)
     },
 

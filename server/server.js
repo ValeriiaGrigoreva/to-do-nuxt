@@ -30,6 +30,10 @@ app.delete('/deleteTask', (req,res) => {
   res.status(200).send("cool");
 })
 
+app.get('/getTask', (req,res) => {
+ console.log(req.query.id);
+})
+
 app.listen(8000, () => {
   console.log('Run Auth API Server')
 })

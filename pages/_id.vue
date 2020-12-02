@@ -43,39 +43,47 @@ import axios from "axios";
 export default {
 
     
-        async asyncData({$axios, params}) {
-            let task = await $axios.get(`http://localhost:8000/tasks?id=${params.id}`)
-            console.log(task)
-            return {task}
-        },
+        // async asyncData({$axios, params}) {
+        //     let task = await $axios.get(`http://localhost:8000/tasks?id=${params.id}`)
+        //     console.log(task)
+        //     return {task}
+        // },
 
         data() {
             return {
                 modal_for_end_task: false,
-                task: [],
+                task: null,
             }
         },
 
-        methods: {
-
-        async closeTask(table_item){ 
-            this.modal_for_end_task = true;
-            //let deleteIndex = this.tasks.findIndex(task => task.id == table_item.id);
-            //this.tasks.splice(deleteIndex,1);
-            await axios.delete(`http://localhost:8000/tasks/${table_item.id}`).then(() => {
-                setTimeout (() => {
-                    this.modal_for_end_task=false;
-                    this.$router.push("/");
-                }, 2000);
-            }).catch((err) => {
-                this.$bvToast.toast(err, {
-                title: "Ошибка",
-                variant: "danger",
-                solid: true
-                })
-            });
+        mounted(){
+            this.getTask()
         },
 
+        methods: {
+            getTask(){ 
+                axios.get('http://localhost:8000/getTask').then((response) => {
+                    
+                })
+            },
+
+            async closeTask(table_item){ 
+                this.modal_for_end_task = true;
+                //let deleteIndex = this.tasks.findIndex(task => task.id == table_item.id);
+                //this.tasks.splice(deleteIndex,1);
+                await axios.delete(`http://localhost:8000/tasks/${table_item.id}`).then(() => {
+                    setTimeout (() => {
+                        this.modal_for_end_task=false;
+                        this.$router.push("/");
+                    }, 2000);
+                }).catch((err) => {
+                    this.$bvToast.toast(err, {
+                    title: "Ошибка",
+                    variant: "danger",
+                    solid: true
+                    })
+                });
+            },
     }
 }
 </script>
