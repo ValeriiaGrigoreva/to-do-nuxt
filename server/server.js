@@ -31,7 +31,8 @@ app.delete('/deleteTask', (req,res) => {
 })
 
 app.get('/getTask', (req,res) => {
- console.log(req.query.id);
+  let index = userdb.tasks.findIndex(user => user.id == req.query.id);
+  res.status(200).send(userdb.tasks[index]);
 })
 
 app.listen(8000, () => {

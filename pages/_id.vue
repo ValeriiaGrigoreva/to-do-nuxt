@@ -3,23 +3,23 @@
         <div>
             <p class="header">Наименование задачи</p>
 
-            <p>{{task.data[0].task_name}}</p>
+            <p>{{task.task_name}}</p>
         </div>
         <div>
             <p class="header">Описание задачи</p>
-            <p>{{task.data[0].task_description}}</p>
+            <p>{{task.task_description}}</p>
         </div>
         <div>
             <p class="header">Дедлайн</p>
-            <p>{{task.data[0].deadline}}</p>
+            <p>{{task.deadline}}</p>
         </div>
         <div>
             <p class="header">E-mail человека, который создал задачу</p>
-            <p>{{task.data[0].email}}</p>
+            <p>{{task.email}}</p>
         </div>
         <div class="buttons">
             <nuxt-link to="/"><b-button class="button_ buttonLeft" variant="dark" squared>Вернуться назад</b-button></nuxt-link>
-            <b-button class="button_" variant="dark" squared @click="closeTask(task.data[0])">Завершить задачу</b-button>
+            <b-button class="button_" variant="dark" squared @click="closeTask(task)">Завершить задачу</b-button>
         </div>
 
         <b-modal id="deletetask" centered v-model="modal_for_end_task">
@@ -52,7 +52,7 @@ export default {
         data() {
             return {
                 modal_for_end_task: false,
-                task: null,
+                task: {},
             }
         },
 
@@ -62,8 +62,9 @@ export default {
 
         methods: {
             getTask(){ 
-                axios.get('http://localhost:8000/getTask').then((response) => {
-                    
+                axios.get('http://localhost:8000/getTask', { params: { id: this.$route.params.id }}).then((response) => {
+                    this.task = response.data;
+                    console.log(this.task);
                 })
             },
 
@@ -71,7 +72,7 @@ export default {
                 this.modal_for_end_task = true;
                 //let deleteIndex = this.tasks.findIndex(task => task.id == table_item.id);
                 //this.tasks.splice(deleteIndex,1);
-                await axios.delete(`http://localhost:8000/tasks/${table_item.id}`).then(() => {
+                await axios.delete('http://localhost:8000/deleteTask', { params: { id: table_item.id } }).then(() => {
                     setTimeout (() => {
                         this.modal_for_end_task=false;
                         this.$router.push("/");
