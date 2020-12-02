@@ -122,11 +122,11 @@ export default {
         ok()
       }
     },
-    async closeTask(table_item){ 
+    closeTask(table_item){ 
       this.modal_for_end_task = true
       let deleteIndex = this.tasks.findIndex(task => task.id == table_item.id);
       this.tasks.splice(deleteIndex,1);
-      await axios.delete(`http://localhost:8000/tasks/${table_item.id}`).then(() => {
+      axios.delete('http://localhost:8000/deleteTask', { params: { id: table_item.id } }).then(() => {
         setTimeout (() => {
                     this.modal_for_end_task=false;
                 }, 2000);
@@ -147,9 +147,9 @@ export default {
     //   await axios.post("http://localhost:8000/tasks", newData)
     // },
 
-    // sendData() {
-    //   app.post()
-    // },
+    sendData(newData) {
+      axios.post('http://localhost:8000/sendData', newData)
+    },
 
     // async getData(){
     //   await axios.get("http://localhost:8000/tasks").then((response) => {
@@ -158,7 +158,9 @@ export default {
     // },
 
     getData(){ 
-      axios.get('/getData').then(response => {console.log(response)})
+      axios.get('http://localhost:8000/getData').then((response) => {
+        this.tasks = response.data.tasks;
+        })
           
       }
     

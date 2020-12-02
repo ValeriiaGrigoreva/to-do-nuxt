@@ -1,11 +1,1 @@
-{
-  "tasks": [
-    {
-      "task_name": "Играть в 7 часов вечера в cs:go",
-      "task_description": "ИГРААТЬ",
-      "deadline": "26.11.2020",
-      "email": "krakhimov.it@gmail.com",
-      "id": 2
-    }
-  ]
-}
+{"tasks":[{"task_name":"сделать дз","task_description":"ddv","deadline":"03.12.2020","email":"grigorevavm@yandex.ru","id":1}]}
