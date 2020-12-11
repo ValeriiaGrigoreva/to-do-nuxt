@@ -1,18 +1,22 @@
 'use strict';
 
 const express = require('express');
+const mongoose = require('mongoose')
 const app = express();
 const cors = require('cors');
 const fs = require('fs');
 let userdb = JSON.parse(fs.readFileSync('./db.json', 'UTF-8'));
 const bodyParser = require('body-parser');
+const Tasks = require('./Tasks')
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 app.get('/getData', (req, res) => {
-  res.status(200).send(userdb);
+  let tasksdb = Tasks.find({});
+  res.status(200).send(tasksdb);
 })
 
 app.post('/sendData', (req, res) => {
@@ -35,6 +39,21 @@ app.get('/getTask', (req,res) => {
   res.status(200).send(userdb.tasks[index]);
 })
 
-app.listen(8000, () => {
-  console.log('Run Auth API Server')
-})
+async function start() {
+  try{
+    await mongoose.connect('mongodb://Valeriia:mongodb@cluster0-shard-00-00.y8u7o.mongodb.net:27017,cluster0-shard-00-01.y8u7o.mongodb.net:27017,cluster0-shard-00-02.y8u7o.mongodb.net:27017/tasks?ssl=true&replicaSet=atlas-ylet31-shard-0&authSource=admin&retryWrites=true&w=majority', {
+      useNewUrlParser:true,
+      useFindAndModify: false,
+      useUnifiedTopology: true
+    })
+
+    app.listen(8000, () => {
+      console.log('Run Auth API Server')
+    })
+  } catch (e) {
+    console.log(e)
+  }
+
+}
+
+start()

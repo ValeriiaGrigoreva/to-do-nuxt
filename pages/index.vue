@@ -158,7 +158,8 @@ export default {
 
     getData(){ 
       axios.get('http://localhost:8000/getData').then((response) => {
-        this.tasks = response.data.tasks;
+        console.log(response);
+        this.tasks = response.data;
         })
           
       }
