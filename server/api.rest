@@ -1,0 +1,13 @@
+POST http://localhost:3000/tasks
+Content-Type: application/json
+
+{
+    "task_name": "Играть 8 часов в кс",
+    "task_description": "В доту",
+    "deadline": "Целый день",
+    "email": "krakhimov.it@gmial.com"
+}
+
+###
+
+GET http://localhost:3000/tasks
