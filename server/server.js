@@ -37,13 +37,18 @@ app.post('/tasks', (req, res) => {
 
 })
 
-app.get("/tasks", async (req, res, next) => {
+app.get('/tasks', async (req, res, next) => {
   try{
     const Store_Tasks = await Tasks.find();
     res.json(Store_Tasks)
   }catch(error){
     res.status(500).json({message: error.message})
   }
+})
+
+app.delete("/tasks", (req,res) => {
+  Tasks.deleteOne({"_id": { "$oid" : "5fd794cd4dc4b229d42d423d" }});
+  res.status(200).json({cool: "cool"})
 })
 
 // app.post('/sendData', (req, res) => {
@@ -66,12 +71,15 @@ app.get("/tasks", async (req, res, next) => {
 //   res.status(200).send(userdb.tasks[index]);
 // })
 
-mongoose.connect("mongodb+srv://admin:admin@cluster0.asjqo.mongodb.net/todonuxt?retryWrites=true&w=majority", { useNewUrlParser: true }, function(err){
+mongoose.connect("mongodb://admin:admin@cluster0-shard-00-00.asjqo.mongodb.net:27017,cluster0-shard-00-01.asjqo.mongodb.net:27017,cluster0-shard-00-02.asjqo.mongodb.net:27017/todonuxt?ssl=true&replicaSet=atlas-l4ekkz-shard-0&authSource=admin&retryWrites=true&w=majority", { useNewUrlParser: true }, function(err){
     if(err) return console.log(err);
-    app.listen(3000, function(){
+    app.listen(8000, function(){
         console.log("Сервер ожидает подключения...");
     });
 });
+//mongodb+srv://Valeriia:mongodb@cluster0.y8u7o.mongodb.net/tasks?retryWrites=true&w=majority
+//mongodb+srv://admin:admin@cluster0.asjqo.mongodb.net/todonuxt?retryWrites=true&w=majority
+
 
 // async function start() {
 //   try{

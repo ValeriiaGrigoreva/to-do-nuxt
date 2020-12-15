@@ -1,4 +1,4 @@
-POST http://localhost:3000/tasks
+POST http://localhost:8000/tasks
 Content-Type: application/json
 
 {
@@ -10,4 +10,8 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/tasks
+GET http://localhost:8000/tasks
+
+###
+
+DELETE http://localhost:8000/tasks
