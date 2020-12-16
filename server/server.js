@@ -46,9 +46,16 @@ app.get('/tasks', async (req, res, next) => {
   }
 })
 
-app.delete("/tasks", (req,res) => {
-  Tasks.deleteOne({"_id": { "$oid" : "5fd794cd4dc4b229d42d423d" }});
-  res.status(200).json({cool: "cool"})
+app.get('/tasks/:id', async (req, res) => {
+  //console.log(req.params.id)
+  const taskById = await Tasks.find({"_id": req.params.id})
+  res.status(200).send(taskById)
+}
+)
+
+app.delete('/tasks', async (req,res) => {
+  await Tasks.deleteOne({"_id": req.query.id});
+  await res.status(200).json({cool: "cool"})
 })
 
 // app.post('/sendData', (req, res) => {

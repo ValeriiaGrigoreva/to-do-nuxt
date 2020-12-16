@@ -15,3 +15,6 @@ GET http://localhost:8000/tasks
 ###
 
 DELETE http://localhost:8000/tasks
+
+###
+GET http://localhost:8000/tasks/5fd77d20b957322dbce4bb60

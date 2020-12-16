@@ -101,32 +101,35 @@ export default {
     this.getData()
   },
   methods: {
-    addTask(ok) {
+    async addTask(ok) {
       if (this.task_name != undefined && this.task_description != undefined && this.deadline != undefined && this.email != undefined) {
-        let lastTaskId
-        for(let idt of this.tasks){
-          lastTaskId = idt.id 
-        }
-        if(!lastTaskId){
-          lastTaskId = 0
-        }
+        // let lastTaskId
+        // for(let idt of this.tasks){
+        //   lastTaskId = idt.id 
+        // }
+        // if(!lastTaskId){
+        //   lastTaskId = 0
+        // }
         let newData = {
           "task_name": this.task_name,
           "task_description": this.task_description,
           "deadline": this.deadline.replace(/^(\d{4}).(\d{2}).(\d{2})/,'$3.$2.$1'),
           "email": this.email,
-          "id": lastTaskId+1
+          //"id": lastTaskId+1
         }
-        this.tasks.push(newData)
-        this.sendData(newData)
+        //await this.tasks.push(newData)
+        await this.sendData(newData)
+        await this.getData()
         ok()
       }
     },
     closeTask(table_item){ 
+      console.log(table_item)
       this.modal_for_end_task = true
-      let deleteIndex = this.tasks.findIndex(task => task.id == table_item.id);
-      this.tasks.splice(deleteIndex,1);
-      axios.delete('http://localhost:8000/tasks', { params: { id: table_item.id } }).then(() => {
+      //let deleteIndex = this.tasks.findIndex(task => task._id == table_item._id);
+      //this.tasks.splice(deleteIndex,1);
+      axios.delete('http://localhost:8000/tasks', { params: { id: table_item._id } }).then(() => {
+        this.getData()
         setTimeout (() => {
                     this.modal_for_end_task=false;
                 }, 2000);
@@ -139,11 +142,11 @@ export default {
       });
     },
     onRowSelected(picked){
-      this.$router.push("/" + picked[0].id)
+      this.$router.push("/" + picked[0]._id)
     },
 
-    sendData(newData) {
-      axios.post('http://localhost:8000/tasks', newData)
+    async sendData(newData) {
+      await axios.post('http://localhost:8000/tasks', newData)
     },
 
     async getData(){ 
