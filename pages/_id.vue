@@ -3,19 +3,19 @@
         <div>
             <p class="header">Наименование задачи</p>
 
-            <p>{{task[0].task_name}}</p>
+            <p v-if="task">{{task[0].task_name}}</p>
         </div>
         <div>
             <p class="header">Описание задачи</p>
-            <p>{{task[0].task_description}}</p>
+            <p v-if="task">{{task[0].task_description}}</p>
         </div>
         <div>
             <p class="header">Дедлайн</p>
-            <p>{{task[0].deadline}}</p>
+            <p v-if="task">{{task[0].deadline}}</p>
         </div>
         <div>
             <p class="header">E-mail человека, который создал задачу</p>
-            <p>{{task[0].email}}</p>
+            <p v-if="task">{{task[0].email}}</p>
         </div>
         <div class="buttons">
             <nuxt-link to="/"><b-button class="button_ buttonLeft" variant="dark" squared>Вернуться назад</b-button></nuxt-link>
@@ -52,7 +52,7 @@ export default {
         data() {
             return {
                 modal_for_end_task: false,
-                task: [],
+                task: null,
             }
         },
 

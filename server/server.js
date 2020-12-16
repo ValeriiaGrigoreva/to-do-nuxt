@@ -58,25 +58,6 @@ app.delete('/tasks', async (req,res) => {
   await res.status(200).json({cool: "cool"})
 })
 
-// app.post('/sendData', (req, res) => {
-//   userdb.tasks.push(req.body);
-//   userdb = JSON.stringify(userdb);
-//   fs.writeFileSync('./db.json', userdb);
-//   res.send("cool");
-// })
-
-// app.delete('/deleteTask', (req,res) => {
-//   let deleteIndex = userdb.tasks.findIndex(user => user.id == req.query.id);
-//   userdb.tasks.splice(deleteIndex, 1);
-//   userdb = JSON.stringify(userdb);
-//   fs.writeFileSync('./db.json', userdb);
-//   res.status(200).send("cool");
-// })
-
-// app.get('/getTask', (req,res) => {
-//   let index = userdb.tasks.findIndex(user => user.id == req.query.id);
-//   res.status(200).send(userdb.tasks[index]);
-// })
 
 mongoose.connect("mongodb://admin:admin@cluster0-shard-00-00.asjqo.mongodb.net:27017,cluster0-shard-00-01.asjqo.mongodb.net:27017,cluster0-shard-00-02.asjqo.mongodb.net:27017/todonuxt?ssl=true&replicaSet=atlas-l4ekkz-shard-0&authSource=admin&retryWrites=true&w=majority", { useNewUrlParser: true }, function(err){
     if(err) return console.log(err);
@@ -84,25 +65,3 @@ mongoose.connect("mongodb://admin:admin@cluster0-shard-00-00.asjqo.mongodb.net:2
         console.log("Сервер ожидает подключения...");
     });
 });
-//mongodb+srv://Valeriia:mongodb@cluster0.y8u7o.mongodb.net/tasks?retryWrites=true&w=majority
-//mongodb+srv://admin:admin@cluster0.asjqo.mongodb.net/todonuxt?retryWrites=true&w=majority
-
-
-// async function start() {
-//   try{
-//     await mongoose.connect('mongodb+srv://admin:admin@cluster0.asjqo.mongodb.net/todonuxt?retryWrites=true&w=majority', {
-//       useNewUrlParser:true,
-//       useFindAndModify: false,
-//       useUnifiedTopology: true
-//     })
-
-//     app.listen(8000, () => {
-//       console.log('Run Auth API Server')
-//     })
-//   } catch (e) {
-//     console.log(e)
-//   }
-
-// }
-
-// start()

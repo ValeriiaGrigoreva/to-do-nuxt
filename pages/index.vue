@@ -117,22 +117,21 @@ export default {
           "email": this.email,
           //"id": lastTaskId+1
         }
-        //await this.tasks.push(newData)
+        
         await this.sendData(newData)
-        await this.getData()
+        // await this.getData()
         ok()
       }
     },
     closeTask(table_item){ 
       console.log(table_item)
       this.modal_for_end_task = true
-      //let deleteIndex = this.tasks.findIndex(task => task._id == table_item._id);
-      //this.tasks.splice(deleteIndex,1);
+      let deleteIndex = this.tasks.findIndex(task => task._id == table_item._id);
+      this.tasks.splice(deleteIndex,1);
       axios.delete('http://localhost:8000/tasks', { params: { id: table_item._id } }).then(() => {
-        this.getData()
         setTimeout (() => {
-                    this.modal_for_end_task=false;
-                }, 2000);
+          this.modal_for_end_task=false;
+        }, 2000);
       }).catch((err) => {
         this.$bvToast.toast(err, {
           title: "Ошибка",
@@ -146,12 +145,13 @@ export default {
     },
 
     async sendData(newData) {
-      await axios.post('http://localhost:8000/tasks', newData)
+      await axios.post('http://localhost:8000/tasks', newData).then((response)=>{
+        this.tasks.push(response.data.createdTask)
+      })
     },
 
     async getData(){ 
       await axios.get('http://localhost:8000/tasks').then((response) => {
-        //console.log(response);
         this.tasks = response.data;
         })
           
